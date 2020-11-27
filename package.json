@@ -1,13 +1,13 @@
 {
-  "name": "@oscura/device-data-parse",
+  "name": "@oscura/iot-data-parse",
   "version": "1.0.0",
   "description": "设备数据解析",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "author": "Oscura",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "directory": "https://gitee.com/xingshuang/device-data-parse.git"
+    "directory": "https://gitee.com/xingshuang/iot-data-parse.git"
   },
   "keywords": [],
   "bugs": {
