@@ -1,5 +1,5 @@
-import { add } from './test'
+import { add } from './tmp/test'
 // console.log('hello');
 // console.log(add(1, 2))
-export const tmp = 1;
+export const tmp = 'xingshuang';
 export { add };

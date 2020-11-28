@@ -2,14 +2,13 @@ import babel from "@rollup/plugin-babel";
 // import resolve from 'rollup-plugin-node-resolve';
 // import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser'
-// rollup.config.js
 import typescript from '@rollup/plugin-typescript';
 
 export default {
   input: 'src/index.ts',
   output: {
     dir: 'dist',
-    format: 'cjs'
+    format: 'esm'
   },
   plugins: [
     typescript({ lib: ["es5", "es6", "dom"], target: "es5" }),
