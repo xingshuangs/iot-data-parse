@@ -5,11 +5,11 @@ const wrong = "错误情况"
 //#region toArray()
 
 test(`${right}：单个偶数个数的16进制字符串`, () => {
-  expect(HexUtils.toArray("1A")).toEqual([0x1A]);
+  expect(HexUtils.toArray("1A")).toEqual(new Uint8Array([0x1A]));
 });
 
 test(`${right}：多个偶数个数的16进制字符串`, () => {
-  expect(HexUtils.toArray("1a6BdE8c")).toEqual([0x1a, 0x6b, 0xde, 0x8c]);
+  expect(HexUtils.toArray("1a6BdE8c")).toEqual(new Uint8Array([0x1a, 0x6b, 0xde, 0x8c]));
 });
 
 test(`${wrong}：0个的16进制字符串`, () => {
@@ -29,19 +29,19 @@ test(`${wrong}：存在非16进制字符串的字符`, () => {
 //#region toString()
 
 test(`${right}：空16进制数值型数组`, () => {
-  expect(HexUtils.toString([])).toEqual("");
+  expect(HexUtils.toString(new Uint8Array([]))).toEqual("");
 });
 
 test(`${right}：单个16进制数值型数组`, () => {
-  expect(HexUtils.toString([0x1A])).toEqual("1A");
+  expect(HexUtils.toString(new Uint8Array([0x1A]))).toEqual("1A");
 });
 
 test(`${right}：多个16进制数值型数组，无逗号分割`, () => {
-  expect(HexUtils.toString([0x1A, 0x66, 0x3d])).toEqual("1A663D");
+  expect(HexUtils.toString(new Uint8Array([0x1A, 0x66, 0x3d]))).toEqual("1A663D");
 });
 
 test(`${right}：多个16进制数值型数组，有逗号分割`, () => {
-  expect(HexUtils.toString([0x1A, 0x66, 0x3d], true)).toEqual("1A,66,3D");
+  expect(HexUtils.toString(new Uint8Array([0x1A, 0x66, 0x3d]), true)).toEqual("1A,66,3D");
 });
 
 //#endregion

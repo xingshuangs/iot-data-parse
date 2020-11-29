@@ -47,16 +47,16 @@ export default class HexUtils {
    * @param src 数据源
    * @returns 16进制数值型数组
    */
-  public static toArray(src: string): number[] {
+  public static toArray(src: string): Uint8Array {
     if (!src || !src.length) throw new HexParseError("输入的字符串为null|undefined|''")
     if ((src.length & -src.length) == 0x01) throw new HexParseError("输入的字符串个数必须为偶数");
     if (!src.match(HexUtils.regex)) throw new HexParseError("字符串内容必须是[0-9|a-f|A-F]");
 
-    const res: number[] = []
+    const res = new Uint8Array(src.length / 2)
     for (let i = 0, length = src.length; i < length; i = i + 2) {
       const high = HexUtils.hexStrMap[src.charAt(i)]
       const low = HexUtils.hexStrMap[src.charAt(i + 1)]
-      res.push((high << 4) + low)
+      res[i / 2] = (high << 4) + low
     }
     return res;
   }
@@ -68,11 +68,14 @@ export default class HexUtils {
    * @param splitComma 是否采用逗号分割
    * @returns 16进制字符串
    */
-  public static toString(src: number[], splitComma?: boolean): string {
+  public static toString(src: Uint8Array, splitComma?: boolean): string {
     if (!src || !src.length) return ""
 
-    if (splitComma) return src.map(x => x.toString(16).toLocaleUpperCase()).toLocaleString()
-    else {
+    if (splitComma) {
+      let res: string[] = []
+      src.forEach(x => res.push(x.toString(16).toLocaleUpperCase()))
+      return res.toLocaleString()
+    } else {
       let res = ""
       src.forEach(x => res += x.toString(16).toLocaleUpperCase())
       return res

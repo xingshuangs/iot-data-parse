@@ -1,3 +1,19 @@
+# IOT-DATA-PARSE
+
+![npm-v1.0.1](https://img.shields.io/badge/npm-v1.0.1-brightgreen)
+
+## CopyRight
+
+@2019-2020 Oscura, All Rights Reserved
+
+## How to get
+
+```
+npm install @oscura/iot-data-parse
+```
+
+## Description
+
 Now, it is a demo.
 
 ## Target
