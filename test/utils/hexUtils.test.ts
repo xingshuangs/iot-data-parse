@@ -36,8 +36,12 @@ test(`${right}：单个16进制数值型数组`, () => {
   expect(HexUtils.toString([0x1A])).toEqual("1A");
 });
 
-test(`${right}：多个16进制数值型数组`, () => {
+test(`${right}：多个16进制数值型数组，无逗号分割`, () => {
   expect(HexUtils.toString([0x1A, 0x66, 0x3d])).toEqual("1A663D");
+});
+
+test(`${right}：多个16进制数值型数组，有逗号分割`, () => {
+  expect(HexUtils.toString([0x1A, 0x66, 0x3d], true)).toEqual("1A,66,3D");
 });
 
 //#endregion

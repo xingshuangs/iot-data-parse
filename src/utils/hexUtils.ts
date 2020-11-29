@@ -65,12 +65,17 @@ export default class HexUtils {
    * 将16进制数值型数组转换为16进制字符串
    * 
    * @param src 16进制数值型数组
+   * @param splitComma 是否采用逗号分割
    * @returns 16进制字符串
    */
-  public static toString(src: number[]): string {
-    let res = ""
-    if (!src || !src.length) return res
-    src.forEach(x => res += x.toString(16).toLocaleUpperCase())
-    return res
+  public static toString(src: number[], splitComma?: boolean): string {
+    if (!src || !src.length) return ""
+
+    if (splitComma) return src.map(x => x.toString(16).toLocaleUpperCase()).toLocaleString()
+    else {
+      let res = ""
+      src.forEach(x => res += x.toString(16).toLocaleUpperCase())
+      return res
+    }
   }
 }
