@@ -4,17 +4,17 @@ export default class HexParse {
   /**
    * 读取数据的dataView对象，需要外接传入
    */
-  private _rdDataView: DataView
+  public rdDataView: DataView
 
   /**
    * 写入数据的dataView对象，默认生成，最大字节数8个
    */
-  private _wtDataView: DataView = new DataView(new ArrayBuffer(8))
+  private wtDataView: DataView = new DataView(new ArrayBuffer(8))
 
   /**
    * 添加数据使用的ArrayBuffer
    */
-  private _addBuffer: number[] = []
+  private adBuffer: number[] = []
 
   /**
    * 构造方法
@@ -22,15 +22,7 @@ export default class HexParse {
    * @param rdData 传入数据源
    */
   constructor(rdData: Uint8Array = new Uint8Array()) {
-    this._rdDataView = new DataView(rdData.buffer)
-  }
-
-  public get rdDataView(): DataView {
-    return this._rdDataView
-  }
-
-  public set rdDataView(rdDataView: DataView) {
-    this._rdDataView = rdDataView;
+    this.rdDataView = new DataView(rdData.buffer)
   }
 
   //#region  获取数值
@@ -43,10 +35,10 @@ export default class HexParse {
    * @returns true|false
    */
   public toBoolean(byteOffset: number = 0, bitOffset: number): boolean {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
     if (bitOffset < 0 || bitOffset >= 8) throw RangeError(`位偏移量=8`)
 
-    return (this._rdDataView.getUint8(byteOffset) >> bitOffset & 0x01) == 0x01
+    return (this.rdDataView.getUint8(byteOffset) >> bitOffset & 0x01) == 0x01
   }
 
   /**
@@ -56,8 +48,8 @@ export default class HexParse {
    * @returns Int8类型数据
    */
   public toInt8(byteOffset: number = 0): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getInt8(byteOffset)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getInt8(byteOffset)
   }
 
   /**
@@ -67,8 +59,8 @@ export default class HexParse {
    * @returns Uint8类型数据
    */
   public toUint8(byteOffset: number = 0): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getUint8(byteOffset)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getUint8(byteOffset)
   }
 
   /**
@@ -79,8 +71,8 @@ export default class HexParse {
    * @returns Int16类型数据
    */
   public toInt16(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getInt16(byteOffset, littleEndian)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getInt16(byteOffset, littleEndian)
   }
 
   /**
@@ -91,8 +83,8 @@ export default class HexParse {
    * @returns Uint16类型数据
    */
   public toUint16(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getUint16(byteOffset, littleEndian)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getUint16(byteOffset, littleEndian)
   }
 
   /**
@@ -103,8 +95,8 @@ export default class HexParse {
    * @returns Int32类型数据
    */
   public toInt32(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getInt32(byteOffset, littleEndian)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getInt32(byteOffset, littleEndian)
   }
 
   /**
@@ -115,8 +107,8 @@ export default class HexParse {
    * @returns Uint32类型数据
    */
   public toUint32(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getUint32(byteOffset, littleEndian)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getUint32(byteOffset, littleEndian)
   }
 
   /**
@@ -127,8 +119,8 @@ export default class HexParse {
    * @returns Float32类型数据
    */
   public toFloat32(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getFloat32(byteOffset, littleEndian)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getFloat32(byteOffset, littleEndian)
   }
 
   /**
@@ -139,8 +131,8 @@ export default class HexParse {
    * @returns Float64类型数据
    */
   public toFloat64(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this._rdDataView.byteLength) throw RangeError(`数据字节长度=${this._rdDataView.byteLength}`)
-    return this._rdDataView.getFloat64(byteOffset, littleEndian)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
+    return this.rdDataView.getFloat64(byteOffset, littleEndian)
   }
 
   /**
@@ -153,7 +145,7 @@ export default class HexParse {
    */
   public toString(byteOffset: number = 0, byteLength: number = 0, outputEncoding: string = "utf-8"): string {
     const decoder = new TextDecoder(outputEncoding)
-    const buf = this._rdDataView.buffer.slice(byteOffset, byteOffset + byteLength)
+    const buf = this.rdDataView.buffer.slice(byteOffset, byteOffset + byteLength)
     return decoder.decode(buf)
   }
 
@@ -168,8 +160,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getInt8Bytes(num: number): Uint8Array {
-    this._wtDataView.setInt8(0, num)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 1)
+    this.wtDataView.setInt8(0, num)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 1)
   }
 
   /**
@@ -179,8 +171,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getUint8Bytes(num: number): Uint8Array {
-    this._wtDataView.setUint8(0, num)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 1)
+    this.wtDataView.setUint8(0, num)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 1)
   }
 
   /**
@@ -190,8 +182,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getInt16Bytes(num: number, littleEndian?: boolean): Uint8Array {
-    this._wtDataView.setInt16(0, num, littleEndian)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 2)
+    this.wtDataView.setInt16(0, num, littleEndian)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 2)
   }
 
   /**
@@ -201,8 +193,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getUint16Bytes(num: number, littleEndian?: boolean): Uint8Array {
-    this._wtDataView.setUint16(0, num, littleEndian)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 2)
+    this.wtDataView.setUint16(0, num, littleEndian)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 2)
   }
 
   /**
@@ -212,8 +204,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getInt32Bytes(num: number, littleEndian?: boolean): Uint8Array {
-    this._wtDataView.setInt32(0, num, littleEndian)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 4)
+    this.wtDataView.setInt32(0, num, littleEndian)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 4)
   }
 
   /**
@@ -223,8 +215,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getUint32Bytes(num: number, littleEndian?: boolean): Uint8Array {
-    this._wtDataView.setUint32(0, num, littleEndian)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 4)
+    this.wtDataView.setUint32(0, num, littleEndian)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 4)
   }
 
   /**
@@ -234,8 +226,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getFloat32Bytes(num: number, littleEndian?: boolean): Uint8Array {
-    this._wtDataView.setFloat32(0, num, littleEndian)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 4)
+    this.wtDataView.setFloat32(0, num, littleEndian)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 4)
   }
 
   /**
@@ -245,8 +237,8 @@ export default class HexParse {
    * @returns Uint8Array对象
    */
   public getFloat64Bytes(num: number, littleEndian?: boolean): Uint8Array {
-    this._wtDataView.setFloat64(0, num, littleEndian)
-    return new Uint8Array(this._wtDataView.buffer).subarray(0, 8)
+    this.wtDataView.setFloat64(0, num, littleEndian)
+    return new Uint8Array(this.wtDataView.buffer).subarray(0, 8)
   }
 
   public getStringBytes(str: string): Uint8Array {
@@ -258,55 +250,55 @@ export default class HexParse {
   //#region  添加并串联数据
 
   public clearAddBuffer(): void {
-    this._addBuffer = []
+    this.adBuffer = []
   }
 
   public getAddResult(): Uint8Array {
-    return new Uint8Array(this._addBuffer)
+    return new Uint8Array(this.adBuffer)
   }
 
   public addInt8(num: number): HexParse {
-    this.getInt8Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getInt8Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addUint8(num: number): HexParse {
-    this.getUint8Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getUint8Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addInt16(num: number): HexParse {
-    this.getInt8Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getInt16Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addUint16(num: number): HexParse {
-    this.getUint16Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getUint16Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addInt32(num: number): HexParse {
-    this.getInt32Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getInt32Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addUint32(num: number): HexParse {
-    this.getUint32Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getUint32Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addFloat32(num: number): HexParse {
-    this.getFloat32Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getFloat32Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addFloat64(num: number): HexParse {
-    this.getFloat64Bytes(num).forEach(x => this._addBuffer.push(x))
+    this.getFloat64Bytes(num).forEach(x => this.adBuffer.push(x))
     return this
   }
 
   public addString(str: string): HexParse {
-    this.getStringBytes(str).forEach(x => this._addBuffer.push(x))
+    this.getStringBytes(str).forEach(x => this.adBuffer.push(x))
     return this
   }
 
