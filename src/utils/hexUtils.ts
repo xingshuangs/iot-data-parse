@@ -66,14 +66,20 @@ export default class HexUtils {
    * 
    * @param src 16进制数值型数组
    * @param splitComma 是否采用逗号分割
+   * @param prefix 是否添加前缀“0x”
    * @returns 16进制字符串
+   * @example 
+   * src : [0x22,0x56,0xA1], splitComma : true, prefix : true ==> 0x22,0x56,0xA1
+   * src : [0x22,0x56,0xA1], splitComma :                     ==> 22,56,A1
+   * src : [0x22,0x56,0xA1]                                   ==> 2256A1
    */
-  public static toString(src: Uint8Array, splitComma?: boolean): string {
+  public static toString(src: Uint8Array, splitComma?: boolean, prefix?: boolean): string {
     if (!src || !src.length) return ""
 
     if (splitComma) {
-      let res: string[] = []
-      src.forEach(x => res.push(x.toString(16).toLocaleUpperCase()))
+      const res: string[] = []
+      const pre = prefix ? "0x" : ""
+      src.forEach(x => res.push(pre + x.toString(16).toLocaleUpperCase()))
       return res.toLocaleString()
     } else {
       let res = ""
