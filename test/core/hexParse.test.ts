@@ -1,4 +1,4 @@
-import HexParse from "../../src/utils/hexParse"
+import HexParse from "../../src/core/hexParse"
 // import HexUtils from "../../src/utils/hexUtils"
 
 const right = "正确情况"
