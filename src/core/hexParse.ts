@@ -1,5 +1,9 @@
 
 import { TextEncoder, TextDecoder } from "util"
+
+/**
+ * 16进制数据解析器
+ */
 export default class HexParse {
 
   //#region 变量
@@ -275,6 +279,17 @@ export default class HexParse {
   public getStringBytes(str: string): Uint8Array {
     const encoder = new TextEncoder()
     return encoder.encode(str)
+  }
+
+  /**
+   * 根据字节偏移量和字节长度获取指定字节数组
+   * 
+   * @param byteOffset 字节偏移量
+   * @param byteLength 字节长度
+   * @returns Uint8Array对象
+   */
+  public getUint8Array(byteOffset: number, byteLength: number): Uint8Array {
+    return new Uint8Array(this.rdDataView.buffer).subarray(byteOffset, byteOffset + byteLength)
   }
 
   //#endregion
