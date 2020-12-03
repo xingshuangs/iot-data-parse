@@ -76,15 +76,13 @@ export default class HexUtils {
   public static toString(src: Uint8Array, splitComma?: boolean, prefix?: boolean): string {
     if (!src || !src.length) return ""
 
-    if (splitComma) {
-      const res: string[] = []
-      const pre = prefix ? "0x" : ""
-      src.forEach(x => res.push(pre + x.toString(16).toLocaleUpperCase()))
-      return res.toLocaleString()
-    } else {
-      let res = ""
-      src.forEach(x => res += x.toString(16).toLocaleUpperCase())
-      return res
-    }
+    const res: string[] = []
+    src.forEach(x => {
+      let tmp = x.toString(16).toLocaleUpperCase()
+      if (tmp.length == 1) tmp = "0" + tmp
+      if (prefix) tmp = "0x" + tmp
+      res.push(tmp)
+    })
+    return splitComma ? res.join(",") : res.join("")
   }
 }

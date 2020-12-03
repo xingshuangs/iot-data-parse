@@ -37,15 +37,15 @@ test(`${right}：单个16进制数值型数组`, () => {
 });
 
 test(`${right}：多个16进制数值型数组，无逗号分割，无前缀`, () => {
-  expect(HexUtils.toString(new Uint8Array([0x1A, 0x66, 0x3d]))).toEqual("1A663D");
+  expect(HexUtils.toString(new Uint8Array([0x0A, 0x66, 0x3d]))).toEqual("0A663D");
 });
 
 test(`${right}：多个16进制数值型数组，有逗号分割，无前缀`, () => {
-  expect(HexUtils.toString(new Uint8Array([0x1A, 0x66, 0x3d]), true)).toEqual("1A,66,3D");
+  expect(HexUtils.toString(new Uint8Array([0x0A, 0x66, 0x3d]), true)).toEqual("0A,66,3D");
 });
 
 test(`${right}：多个16进制数值型数组，有逗号分割，有前缀`, () => {
-  expect(HexUtils.toString(new Uint8Array([0x1A, 0x66, 0x3d]), true, true)).toEqual("0x1A,0x66,0x3D");
+  expect(HexUtils.toString(new Uint8Array([0x0A, 0x66, 0x3d]), true, true)).toEqual("0x0A,0x66,0x3D");
 });
 
 //#endregion
