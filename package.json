@@ -13,9 +13,14 @@
   },
   "files": [
     "/dist",
-    "*.d.ts"
+    "*.d.ts",
+    "src"
   ],
-  "keywords": [],
+  "keywords": [
+    "iot-data-parse",
+    "iot",
+    "parse"
+  ],
   "bugs": {
     "email": "xingshuang_cool@163.com",
     "url": "https://github.com/xingshuang0122/iot-data-parse/issues"
