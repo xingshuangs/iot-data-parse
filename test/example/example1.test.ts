@@ -1,6 +1,5 @@
 import DataUnit from "../../src/core/dataUnit"
 import HexParse from "../../src/core/hexParse"
-// import HexUtils from "../../src/utils/hexUtils";
 import { dataTypeEmMap } from "../../src/core/dataTypeEm"
 
 const right = "正确情况"
@@ -47,7 +46,6 @@ test(`${right}：example1`, () => {
     .addString("xingshuang")
     .addString("今天天气好")
     .getAddResult()
-  // console.log(HexUtils.toString(src, true))
   hexParse.rdDataView = new DataView(src.buffer)
   dataSource.forEach(x => x.extractValue(hexParse))
   let result = ""
