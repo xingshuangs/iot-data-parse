@@ -1,6 +1,6 @@
 # IOT-DATA-PARSE
 
-![npm-v1.0.1](https://img.shields.io/badge/npm-v1.0.1-brightgreen)
+![npm-v1.0.2](https://img.shields.io/badge/npm-v1.0.2-brightgreen)
 
 ## CopyRight
 
