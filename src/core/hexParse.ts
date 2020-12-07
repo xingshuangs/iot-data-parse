@@ -342,7 +342,7 @@ export default class HexParse {
   /**
    * 添加Int8的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Int8类型数据
    * @returns 对象本身this
    */
   public addInt8(num: number): HexParse {
@@ -351,9 +351,20 @@ export default class HexParse {
   }
 
   /**
+   * 添加Int8的数据类型
+   * 
+   * @param num 待添加的Int8类型数据
+   * @returns 对象本身this
+   */
+  public addInt8Array(num: number[]): HexParse {
+    num.forEach(x => this.addInt8(x))
+    return this
+  }
+
+  /**
  * 添加Uint8的数据类型
  * 
- * @param num 待添加的数据
+ * @param num 待添加的Uint8类型数据
  * @returns 对象本身this
  */
   public addUint8(num: number): HexParse {
@@ -362,9 +373,20 @@ export default class HexParse {
   }
 
   /**
+   * 添加Uint8的数据类型
+   * 
+   * @param num 待添加的Uint8类型数据
+   * @returns 对象本身this
+   */
+  public addUint8Array(num: number[]): HexParse {
+    num.forEach(x => this.addUint8(x))
+    return this
+  }
+
+  /**
    * 添加Int16的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Int16类型数据
    * @returns 对象本身this
    */
   public addInt16(num: number): HexParse {
@@ -373,9 +395,20 @@ export default class HexParse {
   }
 
   /**
+   * 添加Int16的数据类型
+   * 
+   * @param num 待添加的Int16类型数据
+   * @returns 对象本身this
+   */
+  public addInt16Array(num: number[]): HexParse {
+    num.forEach(x => this.addInt16(x))
+    return this
+  }
+
+  /**
    * 添加Uint16的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Uint16类型数据
    * @returns 对象本身this
    */
   public addUint16(num: number): HexParse {
@@ -384,9 +417,20 @@ export default class HexParse {
   }
 
   /**
+   * 添加Uint16的数据类型
+   * 
+   * @param num 待添加的Uint16类型数据
+   * @returns 对象本身this
+   */
+  public addUint16Array(num: number[]): HexParse {
+    num.forEach(x => this.addUint16(x))
+    return this
+  }
+
+  /**
    * 添加Int32的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Int32类型数据
    * @returns 对象本身this
    */
   public addInt32(num: number): HexParse {
@@ -395,9 +439,20 @@ export default class HexParse {
   }
 
   /**
+   * 添加Int32的数据类型
+   * 
+   * @param num 待添加的Int32类型数据
+   * @returns 对象本身this
+   */
+  public addInt32Array(num: number[]): HexParse {
+    num.forEach(x => this.addInt32(x))
+    return this
+  }
+
+  /**
    * 添加Uint32的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Uint32类型数据
    * @returns 对象本身this
    */
   public addUint32(num: number): HexParse {
@@ -406,9 +461,20 @@ export default class HexParse {
   }
 
   /**
+   * 添加Uint32的数据类型
+   * 
+   * @param num 待添加的Uint32类型数据
+   * @returns 对象本身this
+   */
+  public addUint32Array(num: number[]): HexParse {
+    num.forEach(x => this.addUint32(x))
+    return this
+  }
+
+  /**
    * 添加Float32的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Float32类型数据
    * @returns 对象本身this
    */
   public addFloat32(num: number): HexParse {
@@ -417,13 +483,47 @@ export default class HexParse {
   }
 
   /**
+   * 添加Float32的数据类型
+   * 
+   * @param num 待添加的Float32类型数据
+   * @returns 对象本身this
+   */
+  public addFloat32Array(num: number[]): HexParse {
+    num.forEach(x => this.addFloat32(x))
+    return this
+  }
+
+
+  /**
    * 添加Float64的数据类型
    * 
-   * @param num 待添加的数据
+   * @param num 待添加的Float64类型数据
    * @returns 对象本身this
    */
   public addFloat64(num: number): HexParse {
     this.getFloat64Bytes(num).forEach(x => this.adBuffer.push(x))
+    return this
+  }
+
+  /**
+   * 添加Float64的数据类型数组
+   * 
+   * @param num 待添加的Float64类型数据
+   * @returns 对象本身this
+   */
+  public addFloat64Array(num: number[]): HexParse {
+    num.forEach(x => this.addFloat64(x))
+    return this
+  }
+
+  /**
+   * 添加字符串的数据类型
+   * 
+   * @param num 待添加的string类型数据
+   * @returns 对象本身this
+   */
+  public addString(str: string): HexParse {
+    this.getStringBytes(str).forEach(x => this.adBuffer.push(x))
     return this
   }
 
@@ -433,8 +533,8 @@ export default class HexParse {
    * @param num 待添加的数据
    * @returns 对象本身this
    */
-  public addString(str: string): HexParse {
-    this.getStringBytes(str).forEach(x => this.adBuffer.push(x))
+  public addStringArray(str: string[]): HexParse {
+    str.forEach(x => this.addString(x))
     return this
   }
 

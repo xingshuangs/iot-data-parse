@@ -73,7 +73,15 @@ export default class DataUnit {
    * 获取单元数据的信息
    */
   public toString(): string {
-    return `${this.description}: ${this.value} ${this.unit}`
+    let res = ""
+    if (this.value instanceof Array) {
+      for (let i = 0, length = this.value.length; i < length; i++) {
+        res += `${this.value[i]} ${this.unit}`
+        if (i != length - 1) res += ", "
+      }
+      return `${this.description}: ${res}`
+    }
+    else return `${this.description}: ${this.value} ${this.unit}`
   }
 
   /**
@@ -81,7 +89,7 @@ export default class DataUnit {
    * 
    * @param parse 数据解析器
    */
-  public extractValue(parse: HexParse): void {
+  public extractValue(parse: HexParse): string | number[] | boolean[] {
     switch (this.dataType) {
       case DataTypeEm.Bool: this.value = parse.toBoolean(this.byteOffset, this.bitOffset, this.count); break;
       case DataTypeEm.Ushort: this.value = parse.toUint16(this.byteOffset, this.count, this.littleEndian); break;
@@ -93,5 +101,6 @@ export default class DataUnit {
       case DataTypeEm.String: this.value = parse.toString(this.byteOffset, this.count); break;
     }
     this.bytes = parse.getUint8Array(this.byteOffset, this.count)
+    return this.value
   }
 }

@@ -112,9 +112,21 @@ test(`${right}：addInt8`, () => {
   expect(res).toEqual(new Uint8Array([0xFF, 0x81, 0x01, 0x7F]))
 })
 
+test(`${right}：addInt8Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addInt8Array([-1, -127, 1, 127]).getAddResult()
+  expect(res).toEqual(new Uint8Array([0xFF, 0x81, 0x01, 0x7F]))
+})
+
 test(`${right}：addUint8`, () => {
   const hexParse = new HexParse()
   const res = hexParse.addUint8(33).addUint8(254).addUint8(211).addUint8(121).getAddResult()
+  expect(res).toEqual(new Uint8Array([0x21, 0xFE, 0xD3, 0x79]))
+})
+
+test(`${right}：addUint8Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addUint8Array([33, 254, 211, 121]).getAddResult()
   expect(res).toEqual(new Uint8Array([0x21, 0xFE, 0xD3, 0x79]))
 })
 
@@ -124,9 +136,21 @@ test(`${right}：addInt16`, () => {
   expect(res).toEqual(new Uint8Array([0xFF, 0xFF, 0xFF, 0x81, 0x64, 0x59, 0x9B, 0xA7]))
 })
 
+test(`${right}：addInt16Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addInt16Array([-1, -127, 25689, -25689]).getAddResult()
+  expect(res).toEqual(new Uint8Array([0xFF, 0xFF, 0xFF, 0x81, 0x64, 0x59, 0x9B, 0xA7]))
+})
+
 test(`${right}：addUint16`, () => {
   const hexParse = new HexParse()
   const res = hexParse.addUint16(33).addUint16(254).addUint16(8654).addInt16(25689).getAddResult()
+  expect(res).toEqual(new Uint8Array([0x00, 0x21, 0x00, 0xFE, 0x21, 0xCE, 0x64, 0x59]))
+})
+
+test(`${right}：addUint16Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addUint16Array([33, 254, 8654, 25689]).getAddResult()
   expect(res).toEqual(new Uint8Array([0x00, 0x21, 0x00, 0xFE, 0x21, 0xCE, 0x64, 0x59]))
 })
 
@@ -136,9 +160,21 @@ test(`${right}：addInt32`, () => {
   expect(res).toEqual(new Uint8Array([0xFF, 0xFF, 0xFF, 0x81, 0x00, 0x00, 0x64, 0x59, 0xFF, 0xFF, 0x9B, 0xA7]))
 })
 
+test(`${right}：addInt32Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addInt32Array([-127, 25689, -25689]).getAddResult()
+  expect(res).toEqual(new Uint8Array([0xFF, 0xFF, 0xFF, 0x81, 0x00, 0x00, 0x64, 0x59, 0xFF, 0xFF, 0x9B, 0xA7]))
+})
+
 test(`${right}：addUint32`, () => {
   const hexParse = new HexParse()
   const res = hexParse.addUint32(33).addUint32(2568956584).addInt32(25689).getAddResult()
+  expect(res).toEqual(new Uint8Array([0x00, 0x00, 0x00, 0x21, 0x99, 0x1F, 0x2A, 0xA8, 0x00, 0x00, 0x64, 0x59]))
+})
+
+test(`${right}：addUint32Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addUint32Array([33, 2568956584, 25689]).getAddResult()
   expect(res).toEqual(new Uint8Array([0x00, 0x00, 0x00, 0x21, 0x99, 0x1F, 0x2A, 0xA8, 0x00, 0x00, 0x64, 0x59]))
 })
 
@@ -148,15 +184,33 @@ test(`${right}：addFloat32`, () => {
   expect(res).toEqual(new Uint8Array([0x42, 0x04, 0xA3, 0xD7, 0xC1, 0x79, 0xEB, 0x85]))
 })
 
+test(`${right}：addFloat32Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addFloat32Array([33.16, -15.62]).getAddResult()
+  expect(res).toEqual(new Uint8Array([0x42, 0x04, 0xA3, 0xD7, 0xC1, 0x79, 0xEB, 0x85]))
+})
+
 test(`${right}：addFloat64`, () => {
   const hexParse = new HexParse()
   const res = hexParse.addFloat64(156665.35455556).addFloat64(-56516.66664).getAddResult()
   expect(res).toEqual(new Uint8Array([0x41, 0x03, 0x1F, 0xCA, 0xD6, 0x21, 0x39, 0xB7, 0xC0, 0xEB, 0x98, 0x95, 0x55, 0x1D, 0x68, 0xC7]))
 })
 
+test(`${right}：addFloat64Array`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addFloat64Array([156665.35455556, -56516.66664]).getAddResult()
+  expect(res).toEqual(new Uint8Array([0x41, 0x03, 0x1F, 0xCA, 0xD6, 0x21, 0x39, 0xB7, 0xC0, 0xEB, 0x98, 0x95, 0x55, 0x1D, 0x68, 0xC7]))
+})
+
 test(`${right}：addString`, () => {
   const hexParse = new HexParse()
   const res = hexParse.addString("123ABCabc").addString("天气好").getAddResult()
+  expect(res).toEqual(new Uint8Array([0x31, 0x32, 0x33, 0x41, 0x42, 0x43, 0x61, 0x62, 0x63, 0xE5, 0xA4, 0xA9, 0xE6, 0xB0, 0x94, 0xE5, 0xA5, 0xBD]))
+})
+
+test(`${right}：addStringArray`, () => {
+  const hexParse = new HexParse()
+  const res = hexParse.addStringArray(["123ABCabc", "天气好"]).getAddResult()
   expect(res).toEqual(new Uint8Array([0x31, 0x32, 0x33, 0x41, 0x42, 0x43, 0x61, 0x62, 0x63, 0xE5, 0xA4, 0xA9, 0xE6, 0xB0, 0x94, 0xE5, 0xA5, 0xBD]))
 })
 
