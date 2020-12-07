@@ -1,6 +1,6 @@
 {
   "name": "@oscura/iot-data-parse",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "设备数据解析",
   "author": "Oscura",
   "license": "MIT",
@@ -34,9 +34,6 @@
   "engines": {
     "node": ">=12.16.3"
   },
-  "bin": {
-    "jest": "./node_modules/jest/bin/jest.js"
-  },
   "devDependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.12.9",
@@ -54,11 +51,6 @@
     "tslib": "^2.0.3",
     "tslint": "^6.1.3",
     "typescript": "^4.1.2"
-  },
-  "directories": {
-    "bin": "bin",
-    "doc": "doc",
-    "test": "test"
   },
   "dependencies": {}
 }
