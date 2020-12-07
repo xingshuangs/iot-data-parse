@@ -8,76 +8,88 @@ const right = "正确情况"
 
 test(`${right}：toBoolean`, () => {
   const hexParse = new HexParse(new Uint8Array([0xFF, 0x81, 0x01, 0x7F]))
-  expect(hexParse.toBoolean()).toEqual(true)
-  expect(hexParse.toBoolean(1, 7)).toEqual(true)
-  expect(hexParse.toBoolean(2, 1)).toEqual(false)
-  expect(hexParse.toBoolean(3, 5)).toEqual(true)
+  expect(hexParse.toBoolean()[0]).toEqual(true)
+  expect(hexParse.toBoolean(1, 7)[0]).toEqual(true)
+  expect(hexParse.toBoolean(2, 1)[0]).toEqual(false)
+  expect(hexParse.toBoolean(3, 5)[0]).toEqual(true)
+  expect(hexParse.toBoolean(1, 0, 16)).toEqual([true, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false])
+  expect(hexParse.toBoolean(1, 4, 16)).toEqual([false, false, false, true, true, false, false, false, false, false, false, false, true, true, true, true])
 })
 
 test(`${right}：toInt8`, () => {
   const hexParse = new HexParse(new Uint8Array([0xFF, 0x81, 0x01, 0x7F]))
-  expect(hexParse.toInt8()).toEqual(-1)
-  expect(hexParse.toInt8(1)).toEqual(-127)
-  expect(hexParse.toInt8(2)).toEqual(1)
-  expect(hexParse.toInt8(3)).toEqual(127)
+  expect(hexParse.toInt8()[0]).toEqual(-1)
+  expect(hexParse.toInt8(1)[0]).toEqual(-127)
+  expect(hexParse.toInt8(2)[0]).toEqual(1)
+  expect(hexParse.toInt8(3)[0]).toEqual(127)
+  expect(hexParse.toInt8(1, 3)).toEqual([-127, 1, 127])
 })
 
 test(`${right}：toUint8`, () => {
   const hexParse = new HexParse(new Uint8Array([0x21, 0xFE, 0xD3, 0x79]))
-  expect(hexParse.toUint8()).toEqual(33)
-  expect(hexParse.toUint8(1)).toEqual(254)
-  expect(hexParse.toUint8(2)).toEqual(211)
-  expect(hexParse.toUint8(3)).toEqual(121)
+  expect(hexParse.toUint8()[0]).toEqual(33)
+  expect(hexParse.toUint8(1)[0]).toEqual(254)
+  expect(hexParse.toUint8(2)[0]).toEqual(211)
+  expect(hexParse.toUint8(3)[0]).toEqual(121)
+  expect(hexParse.toUint8(1, 3)).toEqual([254, 211, 121])
 })
 
 test(`${right}：toInt16`, () => {
   const hexParse = new HexParse(new Uint8Array([0xFF, 0xFF, 0xFF, 0x81, 0x64, 0x59, 0x9B, 0xA7]))
-  expect(hexParse.toInt16()).toEqual(-1)
-  expect(hexParse.toInt16(2)).toEqual(-127)
-  expect(hexParse.toInt16(4)).toEqual(25689)
-  expect(hexParse.toInt16(6)).toEqual(-25689)
+  expect(hexParse.toInt16()[0]).toEqual(-1)
+  expect(hexParse.toInt16(2)[0]).toEqual(-127)
+  expect(hexParse.toInt16(4)[0]).toEqual(25689)
+  expect(hexParse.toInt16(6)[0]).toEqual(-25689)
+  expect(hexParse.toInt16(2, 3)).toEqual([-127, 25689, -25689])
 })
 
 test(`${right}：toUint16`, () => {
   const hexParse = new HexParse(new Uint8Array([0x00, 0x21, 0x00, 0xFE, 0x21, 0xCE, 0x64, 0x59]))
-  expect(hexParse.toUint16()).toEqual(33)
-  expect(hexParse.toUint16(2)).toEqual(254)
-  expect(hexParse.toUint16(4)).toEqual(8654)
-  expect(hexParse.toUint16(6)).toEqual(25689)
+  expect(hexParse.toUint16()[0]).toEqual(33)
+  expect(hexParse.toUint16(2)[0]).toEqual(254)
+  expect(hexParse.toUint16(4)[0]).toEqual(8654)
+  expect(hexParse.toUint16(6)[0]).toEqual(25689)
+  expect(hexParse.toUint16(2, 3)).toEqual([254, 8654, 25689])
 })
 
 test(`${right}：toInt32`, () => {
   const hexParse = new HexParse(new Uint8Array([0xFF, 0xFF, 0xFF, 0x81, 0x00, 0x00, 0x64, 0x59, 0xFF, 0xFF, 0x9B, 0xA7]))
-  expect(hexParse.toInt32()).toEqual(-127)
-  expect(hexParse.toInt32(4)).toEqual(25689)
-  expect(hexParse.toInt32(8)).toEqual(-25689)
+  expect(hexParse.toInt32()[0]).toEqual(-127)
+  expect(hexParse.toInt32(4)[0]).toEqual(25689)
+  expect(hexParse.toInt32(8)[0]).toEqual(-25689)
+  expect(hexParse.toInt32(4, 2)).toEqual([25689, -25689])
 })
 
 test(`${right}：toUint32`, () => {
   const hexParse = new HexParse(new Uint8Array([0x00, 0x00, 0x00, 0x21, 0x99, 0x1F, 0x2A, 0xA8, 0x00, 0x00, 0x64, 0x59]))
-  expect(hexParse.toUint32()).toEqual(33)
-  expect(hexParse.toUint32(4)).toEqual(2568956584)
-  expect(hexParse.toUint32(8)).toEqual(25689)
+  expect(hexParse.toUint32()[0]).toEqual(33)
+  expect(hexParse.toUint32(4)[0]).toEqual(2568956584)
+  expect(hexParse.toUint32(8)[0]).toEqual(25689)
+  expect(hexParse.toUint32(4, 2)).toEqual([2568956584, 25689])
 })
 
 test(`${right}：toFloat32`, () => {
   const hexParse = new HexParse(new Uint8Array([0x42, 0x04, 0xA3, 0xD7, 0xC1, 0x79, 0xEB, 0x85]))
   // 接收到的数据为 33.15999984741211 ~ 33.16
   // expect(hexParse.toFloat32()).toEqual(33.16)
-  expect(Math.round(hexParse.toFloat32() * 100) / 100).toEqual(33.16)
+  expect(Math.round(hexParse.toFloat32()[0] * 100) / 100).toEqual(33.16)
   // 接收到的数据为 -15.619999885559082 ~ -15.62
   // expect(hexParse.toFloat32(4)).toEqual(-15.62)
-  expect(Math.round(hexParse.toFloat32(4) * 100) / 100).toEqual(-15.62)
+  expect(Math.round(hexParse.toFloat32(4)[0] * 100) / 100).toEqual(-15.62)
+  expect(Math.round(hexParse.toFloat32(0, 2)[0] * 100) / 100).toEqual(33.16)
+  expect(Math.round(hexParse.toFloat32(0, 2)[1] * 100) / 100).toEqual(-15.62)
 })
 
 test(`${right}：toFloat64`, () => {
   const hexParse = new HexParse(new Uint8Array([0x41, 0x03, 0x1F, 0xCA, 0xD6, 0x21, 0x39, 0xB7, 0xC0, 0xEB, 0x98, 0x95, 0x55, 0x1D, 0x68, 0xC7]))
   // 接收到的数据为 33.15999984741211 ~ 33.16
-  expect(hexParse.toFloat64()).toEqual(156665.35455556)
+  expect(hexParse.toFloat64()[0]).toEqual(156665.35455556)
   // expect(Math.round(hexParse.toFloat64() * 100000000) / 100000000).toEqual(156665.35455556)
   // 接收到的数据为 -15.619999885559082 ~ -15.62
-  expect(hexParse.toFloat64(8)).toEqual(-56516.66664)
+  expect(hexParse.toFloat64(8)[0]).toEqual(-56516.66664)
   // expect(Math.round(hexParse.toFloat64(8) * 100000) / 100000).toEqual(-56516.66664)
+  expect(hexParse.toFloat64(0, 2)[0]).toEqual(156665.35455556)
+  expect(hexParse.toFloat64(0, 2)[1]).toEqual(-56516.66664)
 })
 
 test(`${right}：toString`, () => {

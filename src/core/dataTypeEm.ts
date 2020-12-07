@@ -1,24 +1,27 @@
 export enum DataTypeEm {
-  // 位
-  Bool = "Bool",
+  // 位 bool 1个字节
+  Bool = "bool",
+  // 字节 byte 1个字节
+  Byte = "byte",
   // unshort 2个字节
-  Ushort = "Ushort",
+  Ushort = "ushort",
   // short 2个字节
-  Short = "Short",
+  Short = "short",
   // int 4个字节
-  Int = "Int",
+  Int = "int",
   // int 4个字节
-  Uint = "Uint",
+
+  Uint = "uint",
   // // long 8个字节
   // Long,
   // // unlong 8个字节
   // Ulong,
   // float 4个字节
-  Float = "Float",
+  Float = "float",
   // double 8个字节
-  Double = "Double",
+  Double = "double",
   // string 1个字节
-  String = "String",
+  String = "string",
 }
 
 /**
@@ -26,6 +29,7 @@ export enum DataTypeEm {
  */
 export const dataTypeEmMap: { [index: string]: DataTypeEm } = {
   "bool": DataTypeEm.Bool,
+  "byte": DataTypeEm.Byte,
   "ushort": DataTypeEm.Ushort,
   "short": DataTypeEm.Short,
   "int": DataTypeEm.Int,
@@ -33,5 +37,17 @@ export const dataTypeEmMap: { [index: string]: DataTypeEm } = {
   "float": DataTypeEm.Float,
   "double": DataTypeEm.Double,
   "string": DataTypeEm.String
-
 }
+
+export const typeLengthMap = new Map([
+  [DataTypeEm.Bool, 1],
+  [DataTypeEm.Byte, 1],
+  [DataTypeEm.Ushort, 2],
+  [DataTypeEm.Short, 2],
+  [DataTypeEm.Int, 4],
+  [DataTypeEm.Uint, 4],
+  [DataTypeEm.Float, 4],
+  [DataTypeEm.Double, 8],
+  [DataTypeEm.String, 1]
+])
+

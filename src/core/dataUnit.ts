@@ -14,7 +14,7 @@ export default class DataUnit {
   /**
    * 具体的数值
    */
-  value: string | number | boolean = 0
+  value: string | number[] | boolean[] = []
 
   /**
    * 字段名
@@ -37,9 +37,18 @@ export default class DataUnit {
   bitOffset: number = 0
 
   /**
-   * 字节长度，默认1
+   * 数据个数，默认1个，字节长度 = 数据个数 * 类型占的字节数
+   * "bool": 1个字节,
+   * "byte": 1个字节,
+   * "ushort": 2个字节,
+   * "short": 2个字节,
+   * "int": 4个字节,
+   * "uint": 4个字节,
+   * "float": 4个字节,
+   * "double": 8个字节,
+   * "string": 1个字节
    */
-  byteLength: number = 1
+  count: number = 1
 
   /**
    * 数据类型，默认string类型
@@ -74,15 +83,15 @@ export default class DataUnit {
    */
   public extractValue(parse: HexParse): void {
     switch (this.dataType) {
-      case DataTypeEm.Bool: this.value = parse.toBoolean(this.byteOffset, this.bitOffset); break;
-      case DataTypeEm.Ushort: this.value = parse.toUint16(this.byteOffset, this.littleEndian); break;
-      case DataTypeEm.Short: this.value = parse.toInt16(this.byteOffset, this.littleEndian); break;
-      case DataTypeEm.Uint: this.value = parse.toUint32(this.byteOffset, this.littleEndian); break;
-      case DataTypeEm.Int: this.value = parse.toInt32(this.byteOffset, this.littleEndian); break;
-      case DataTypeEm.Float: this.value = parse.toFloat32(this.byteOffset, this.littleEndian); break;
-      case DataTypeEm.Double: this.value = parse.toFloat64(this.byteOffset, this.littleEndian); break;
-      case DataTypeEm.String: this.value = parse.toString(this.byteOffset, this.byteLength); break;
+      case DataTypeEm.Bool: this.value = parse.toBoolean(this.byteOffset, this.bitOffset, this.count); break;
+      case DataTypeEm.Ushort: this.value = parse.toUint16(this.byteOffset, this.count, this.littleEndian); break;
+      case DataTypeEm.Short: this.value = parse.toInt16(this.byteOffset, this.count, this.littleEndian); break;
+      case DataTypeEm.Uint: this.value = parse.toUint32(this.byteOffset, this.count, this.littleEndian); break;
+      case DataTypeEm.Int: this.value = parse.toInt32(this.byteOffset, this.count, this.littleEndian); break;
+      case DataTypeEm.Float: this.value = parse.toFloat32(this.byteOffset, this.count, this.littleEndian); break;
+      case DataTypeEm.Double: this.value = parse.toFloat64(this.byteOffset, this.count, this.littleEndian); break;
+      case DataTypeEm.String: this.value = parse.toString(this.byteOffset, this.count); break;
     }
-    this.bytes = parse.getUint8Array(this.byteOffset, this.byteLength)
+    this.bytes = parse.getUint8Array(this.byteOffset, this.count)
   }
 }

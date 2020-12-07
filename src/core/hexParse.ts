@@ -41,133 +41,162 @@ export default class HexParse {
   //#region  获取数值
 
   /**
+   * 转换对应类型数据的执行方法
+   * 
+   * @param byteOffset 字节偏移量
+   * @param count 数据个数
+   * @param typeByteLength 类型对应的字节长度 
+   * @param callbackFn 回调方法，传入第几个数据的索引，返回对应类型的数据
+   * @returns 对应类型的数组
+   * @throws RangeError异常，超出可访问的索引
+   */
+  private toHandle<T>(byteOffset: number = 0, count: number = 1, typeByteLength: number = 1, callbackFn: (index: number) => T): T[] {
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`总数据字节长度 = ${this.rdDataView.byteLength}`)
+    if (count < 1) throw RangeError("获取的数据个数 < 1")
+    if (byteOffset + count * typeByteLength > this.rdDataView.byteLength)
+      throw RangeError(`偏移量 + 数据个数 * 类型字节长度 > 总数据字节长度${this.rdDataView.byteLength}`)
+    const res: T[] = []
+    for (let i = 0; i < count; i++) {
+      res.push(callbackFn(i))
+    }
+    return res
+  }
+
+  /**
    * 获取Boolean类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
-   * @param bitOffset  位偏移量，默认0
+   * @param byteOffset 字节偏移量，默认0
+   * @param bitOffset 位偏移量，默认0
+   * @param count 数据个数，默认1
    * @returns true|false
    * @throws RangeError异常，超出可访问的索引
    */
-  public toBoolean(byteOffset: number = 0, bitOffset: number = 0): boolean {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    if (bitOffset < 0 || bitOffset >= 8) throw RangeError(`位偏移量=8`)
-
-    return (this.rdDataView.getUint8(byteOffset) >> bitOffset & 0x01) == 0x01
+  public toBoolean(byteOffset: number = 0, bitOffset: number = 0, count: number = 1): boolean[] {
+    if (bitOffset < 0 || bitOffset >= 8) throw RangeError(`位偏移量范围[0,7]`)
+    // boolean类型特殊一点，类型字节长度时 1 / 8 = 0.125
+    return this.toHandle(byteOffset, count, 1 / 8, i => {
+      const bitAdd = (bitOffset + i) % 8
+      const byteAdd = Math.floor((bitOffset + i) / 8)
+      return (this.rdDataView.getUint8(byteOffset + byteAdd) >> bitAdd & 0x01) == 0x01
+    })
   }
 
   /**
    * 获取Int8类型数据
    * 
    * @param byteOffset  字节偏移量，默认0
-   * @returns Int8类型数据
+   * @param count 数据个数，默认1
+   * @returns Int8类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toInt8(byteOffset: number = 0): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getInt8(byteOffset)
+  public toInt8(byteOffset: number = 0, count: number = 1): number[] {
+    return this.toHandle(byteOffset, count, 1, i => this.rdDataView.getInt8(byteOffset + i * 1))
   }
 
   /**
    * 获取Uint8类型数据
    * 
    * @param byteOffset  字节偏移量，默认0
-   * @returns Uint8类型数据
+   * @param count 数据个数，默认1
+   * @returns Uint8类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toUint8(byteOffset: number = 0): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getUint8(byteOffset)
+  public toUint8(byteOffset: number = 0, count: number = 1): number[] {
+    return this.toHandle(byteOffset, count, 1, i => this.rdDataView.getUint8(byteOffset + i * 1))
   }
 
   /**
    * 获取Int16类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
-   * @param littleEndian 是否小端模式，可不填，默认大端模式
-   * @returns Int16类型数据
+   * @param byteOffset 字节偏移量，默认0
+   * @param count 数据个数，默认1
+   * @param littleEndian 是否小端模式，可不填，默认大端模式 即false
+   * @returns Int16类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toInt16(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getInt16(byteOffset, littleEndian)
+  public toInt16(byteOffset: number = 0, count: number = 1, littleEndian?: boolean): number[] {
+    return this.toHandle(byteOffset, count, 2, i => this.rdDataView.getInt16(byteOffset + i * 2, littleEndian))
   }
 
   /**
    * 获取Uint16类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
+   * @param byteOffset 字节偏移量，默认0
+   * @param count 数据个数，默认1
    * @param littleEndian 是否小端模式，可不填，默认大端模式
-   * @returns Uint16类型数据
+   * @returns Uint16类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toUint16(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getUint16(byteOffset, littleEndian)
+  public toUint16(byteOffset: number = 0, count: number = 1, littleEndian?: boolean): number[] {
+    return this.toHandle(byteOffset, count, 2, i => this.rdDataView.getUint16(byteOffset + i * 2, littleEndian))
   }
 
   /**
    * 获取Int32类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
+   * @param byteOffset 字节偏移量，默认0
+   * @param count 数据个数，默认1
    * @param littleEndian 是否小端模式，可不填，默认大端模式
-   * @returns Int32类型数据
+   * @returns Int32类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toInt32(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getInt32(byteOffset, littleEndian)
+  public toInt32(byteOffset: number = 0, count: number = 1, littleEndian?: boolean): number[] {
+    return this.toHandle(byteOffset, count, 4, i => this.rdDataView.getInt32(byteOffset + i * 4, littleEndian))
   }
 
   /**
    * 获取Uint32类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
+   * @param byteOffset 字节偏移量，默认0
+   * @param count 数据个数，默认1
    * @param littleEndian 是否小端模式，可不填，默认大端模式
-   * @returns Uint32类型数据
+   * @returns Uint32类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toUint32(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getUint32(byteOffset, littleEndian)
+  public toUint32(byteOffset: number = 0, count: number = 1, littleEndian?: boolean): number[] {
+    return this.toHandle(byteOffset, count, 4, i => this.rdDataView.getUint32(byteOffset + i * 4, littleEndian))
   }
 
   /**
    * 获取Float32类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
+   * @param byteOffset 字节偏移量，默认0
+   * @param count 数据个数，默认1
    * @param littleEndian 是否小端模式，可不填，默认大端模式
-   * @returns Float32类型数据
+   * @returns Float32类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toFloat32(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getFloat32(byteOffset, littleEndian)
+  public toFloat32(byteOffset: number = 0, count: number = 1, littleEndian?: boolean): number[] {
+    return this.toHandle(byteOffset, count, 4, i => this.rdDataView.getFloat32(byteOffset + i * 4, littleEndian))
   }
 
   /**
    * 获取Float64类型数据
    * 
-   * @param byteOffset  字节偏移量，默认0
+   * @param byteOffset 字节偏移量，默认0
+   * @param count 数据个数，默认1
    * @param littleEndian 是否小端模式，可不填，默认大端模式
-   * @returns Float64类型数据
+   * @returns Float64类型数组
    * @throws RangeError异常，超出可访问的索引
    */
-  public toFloat64(byteOffset: number = 0, littleEndian?: boolean): number {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`数据字节长度=${this.rdDataView.byteLength}`)
-    return this.rdDataView.getFloat64(byteOffset, littleEndian)
+  public toFloat64(byteOffset: number = 0, count: number = 1, littleEndian?: boolean): number[] {
+    return this.toHandle(byteOffset, count, 8, i => this.rdDataView.getFloat64(byteOffset + i * 8, littleEndian))
   }
 
   /**
    * 获取字符串类型的数据
    * 
    * @param byteOffset 字节偏移量，默认0
-   * @param byteLength 字节长度，若不填则直接获取当前偏移量到字符串结束位置
+   * @param count 数据个数，按字节为单位，若不填则直接获取当前偏移量到字符串结束位置
    * @param outputEncoding 字符编码，默认“utf-8”
    * @returns 解析的字符串
+   * @throws RangeError异常，超出可访问的索引
    */
-  public toString(byteOffset: number = 0, byteLength?: number, outputEncoding: string = "utf-8"): string {
-    const decoder = new TextDecoder(outputEncoding)
-    const buf = byteLength ? this.rdDataView.buffer.slice(byteOffset, byteOffset + byteLength)
+  public toString(byteOffset: number = 0, count?: number, outputEncoding?: string): string {
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`总数据字节长度 = ${this.rdDataView.byteLength}`)
+    if (count && count < 1) throw RangeError("获取的数据个数 < 1")
+    const decoder = new TextDecoder(outputEncoding ? outputEncoding : "utf-8")
+    const buf = count ? this.rdDataView.buffer.slice(byteOffset, byteOffset + count * 1)
       : this.rdDataView.buffer.slice(byteOffset)
     return decoder.decode(buf)
   }
