@@ -1,6 +1,6 @@
 # IOT-DATA-PARSE
 
-![npm-v1.0.4](https://img.shields.io/badge/npm-v1.0.4-brightgreen)
+![npm-v1.0.6](https://img.shields.io/badge/npm-v1.0.6-brightgreen)
 
 ## CopyRight
 
@@ -55,6 +55,7 @@ At last, the data we need is "01 7E 5F C3 3B 42", when we get it, we can parse i
 # Instance
 
 ```
+import { DataUnit, DataType, HexParse } from '@oscura/iot-data-parse'
 const dataSource: DataUnit[] = []
 // data configuration that comes from xls file
 const json = [
@@ -66,8 +67,8 @@ const json = [
   { description: "电压", unit: "V", name: "voltage", byteOffset: 9, bitOffset: 0, count: 1, dataType: "float", littleEndian: false },
   { description: "温度", unit: "℃", name: "temperature", byteOffset: 13, bitOffset: 0, count: 2, dataType: "double", littleEndian: false },
   { description: "频率", unit: "Hz", name: "frequency", byteOffset: 29, bitOffset: 0, count: 2, dataType: "float", littleEndian: false },
-  { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 10, dataType: "string", littleEndian: false },
-  { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 47, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
+  { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 7, dataType: "string", littleEndian: false },
+  { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
 ]
 
 // create data configuration
@@ -80,13 +81,13 @@ for (const item of json) {
   data.bitOffset = item.bitOffset
   data.count = item.count
   data.littleEndian = item.littleEndian
-  data.dataType = dataTypeEmMap[item.dataType]
+  data.dataType = DataType.dataTypeEmMap[item.dataType]
   dataSource.push(data)
 }
 
 // create data source in Uint8Array
 const hexParse = new HexParse()
-const src = hexParse.addUint8(0x07)
+hexParse.addUint8(0x07)
   // productNumber
   .addInt32(153)
   // current
@@ -98,11 +99,10 @@ const src = hexParse.addUint8(0x07)
   // frequency
   .addFloat32Array([20.125, 32.811])
   // username
-  .addString("xingshuang")
+  .addString("jackson")
   // alarmContent
   .addString("今天天气好")
-  .getAddResult()
-hexParse.rdDataView = new DataView(src.buffer)
+  .assignRdDataViewByAddResult()
 
 // parse data
 dataSource.forEach(x => x.extractValue(hexParse))
@@ -122,6 +122,6 @@ result：
   电压: 55.2400016784668 V
   温度: 37.22 ℃, 38.51 ℃
   频率: 20.125 Hz, 32.81100082397461 Hz
-  用户名: xingshuang
+  用户名: jackson
   报警内容: 今天天气好
 ```

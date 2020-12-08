@@ -11,7 +11,7 @@ export default class HexParse {
   /**
    * 读取数据的dataView对象，需要外接传入
    */
-  public rdDataView: DataView
+  private rdDataView: DataView
 
   /**
    * 写入数据的dataView对象，默认生成，最大字节数8个
@@ -337,6 +337,14 @@ export default class HexParse {
    */
   public getAddResult(): Uint8Array {
     return new Uint8Array(this.adBuffer)
+  }
+
+  /**
+   * 根据添加的数据结果更新RdDataView，节省外部转换
+   */
+  public assignRdDataViewByAddResult() {
+    const tmp = new Uint8Array(this.adBuffer)
+    this.rdDataView = new DataView(tmp.buffer)
   }
 
   /**

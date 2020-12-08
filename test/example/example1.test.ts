@@ -14,8 +14,8 @@ const json = [
   { description: "电压", unit: "V", name: "voltage", byteOffset: 9, bitOffset: 0, count: 1, dataType: "float", littleEndian: false },
   { description: "温度", unit: "℃", name: "temperature", byteOffset: 13, bitOffset: 0, count: 2, dataType: "double", littleEndian: false },
   { description: "频率", unit: "Hz", name: "frequency", byteOffset: 29, bitOffset: 0, count: 2, dataType: "float", littleEndian: false },
-  { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 10, dataType: "string", littleEndian: false },
-  { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 47, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
+  { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 7, dataType: "string", littleEndian: false },
+  { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
 ]
 
 for (const item of json) {
@@ -33,7 +33,7 @@ for (const item of json) {
 
 test(`${right}：example1`, () => {
   const hexParse = new HexParse()
-  const src = hexParse.addUint8(0x07)
+  hexParse.addUint8(0x07)
     // productNumber
     .addInt32(153)
     // current
@@ -45,11 +45,10 @@ test(`${right}：example1`, () => {
     // frequency
     .addFloat32Array([20.125, 32.811])
     // username
-    .addString("xingshuang")
+    .addString("jackson")
     // alarmContent
     .addString("今天天气好")
-    .getAddResult()
-  hexParse.rdDataView = new DataView(src.buffer)
+    .assignRdDataViewByAddResult()
   dataSource.forEach(x => x.extractValue(hexParse))
   let result = ""
   dataSource.forEach(x => result += (x.toString() + "\r\n"))

@@ -10,7 +10,6 @@ export enum DataTypeEm {
   // int 4个字节
   Int = "int",
   // int 4个字节
-
   Uint = "uint",
   // // long 8个字节
   // Long,
@@ -38,16 +37,4 @@ export const dataTypeEmMap: { [index: string]: DataTypeEm } = {
   "double": DataTypeEm.Double,
   "string": DataTypeEm.String
 }
-
-export const typeLengthMap = new Map([
-  [DataTypeEm.Bool, 1],
-  [DataTypeEm.Byte, 1],
-  [DataTypeEm.Ushort, 2],
-  [DataTypeEm.Short, 2],
-  [DataTypeEm.Int, 4],
-  [DataTypeEm.Uint, 4],
-  [DataTypeEm.Float, 4],
-  [DataTypeEm.Double, 8],
-  [DataTypeEm.String, 1]
-])
 

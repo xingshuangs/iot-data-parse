@@ -1,18 +1,17 @@
 {
   "name": "@oscura/iot-data-parse",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "设备数据解析",
   "author": "Oscura",
   "license": "MIT",
   "main": "dist/lib/index.js",
-  "module": "dist/index.es.js",
   "typings": "dist/types/index.d.ts",
   "repository": {
     "type": "git",
     "directory": "https://github.com/xingshuang0122/iot-data-parse.git"
   },
   "files": [
-    "/dist",
+    "dist",
     "*.d.ts",
     "src"
   ],
