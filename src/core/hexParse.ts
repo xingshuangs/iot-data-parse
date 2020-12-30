@@ -345,6 +345,7 @@ export default class HexParse {
   public assignRdDataViewByAddResult() {
     const tmp = new Uint8Array(this.adBuffer)
     this.rdDataView = new DataView(tmp.buffer)
+    return this
   }
 
   /**

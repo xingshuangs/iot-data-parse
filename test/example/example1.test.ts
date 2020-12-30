@@ -1,6 +1,7 @@
 import DataUnit from "../../src/core/dataUnit"
 import HexParse from "../../src/core/hexParse"
 import { dataTypeEmMap } from "../../src/core/dataTypeEm"
+import * as HexUtils from "../../src/utils/hexUtils"
 
 const right = "正确情况"
 
@@ -49,6 +50,19 @@ test(`${right}：example1`, () => {
     // alarmContent
     .addString("今天天气好")
     .assignRdDataViewByAddResult()
+    .getAddResult()
+  // const res = HexUtils.toHexString(data)
+  // console.log(res)
+  dataSource.forEach(x => x.extractValue(hexParse))
+  let result = ""
+  dataSource.forEach(x => result += (x.toString() + "\r\n"))
+  console.log(result)
+})
+
+test(`${right}：example1`, () => {
+  const inData = '07000000994200999A425CF5C340429C28F5C28F5C40434147AE147AE141A1000042033E776A61636B736F6EE4BB8AE5A4A9E5A4A9E6B094E5A5BD'
+  const uintData = HexUtils.toHexArray(inData)
+  const hexParse = new HexParse(uintData)
   dataSource.forEach(x => x.extractValue(hexParse))
   let result = ""
   dataSource.forEach(x => result += (x.toString() + "\r\n"))

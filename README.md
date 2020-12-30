@@ -85,6 +85,7 @@ for (const item of json) {
   dataSource.push(data)
 }
 
+/*********************************** EXAMPLE1 ***********************************/
 // create data source in Uint8Array
 const hexParse = new HexParse()
 hexParse.addUint8(0x07)
@@ -107,6 +108,15 @@ hexParse.addUint8(0x07)
 // parse data
 dataSource.forEach(x => x.extractValue(hexParse))
 let result = ""
+dataSource.forEach(x => result += (x.toString() + "\r\n"))
+console.log(result)
+
+/*********************************** EXAMPLE2 ***********************************/
+const inData = '07000000994200999A425CF5C340429C28F5C28F5C40434147AE147AE141A1000042033E776A61636B736F6EE4BB8AE5A4A9E5A4A9E6B094E5A5BD'
+const uintData = HexUtils.toHexArray(inData)
+const hexParse2 = new HexParse(uintData)
+dataSource.forEach(x => x.extractValue(hexParse2))
+result = ""
 dataSource.forEach(x => result += (x.toString() + "\r\n"))
 console.log(result)
 ```
