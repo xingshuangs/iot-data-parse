@@ -1,4 +1,4 @@
-import hexUtils from "../exceptions/hexParseError";
+import HexParseError from "../exceptions/hexParseError";
 
 /**
  * 验证16进制字符串的正则表达式
@@ -46,9 +46,9 @@ export const hexStrMap: { [index: string]: number } = {
  * @returns 16进制数值型数组
  */
 export function toHexArray(src: string): Uint8Array {
-  if (!src || !src.length) throw new hexUtils("输入的字符串为null|undefined|''")
-  if ((src.length & -src.length) == 0x01) throw new hexUtils("输入的字符串个数必须为偶数");
-  if (!src.match(regex)) throw new hexUtils("字符串内容必须是[0-9|a-f|A-F]");
+  if (!src || !src.length) throw new HexParseError("输入的字符串为null|undefined|''")
+  if ((src.length & -src.length) == 0x01) throw new HexParseError("输入的字符串个数必须为偶数");
+  if (!src.match(regex)) throw new HexParseError("字符串内容必须是[0-9|a-f|A-F]");
 
   const res = new Uint8Array(src.length / 2)
   for (let i = 0, length = src.length; i < length; i = i + 2) {
