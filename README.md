@@ -55,7 +55,7 @@ At last, the data we need is "01 7E 5F C3 3B 42", when we get it, we can parse i
 # Instance
 
 ```
-import { DataUnit, DataType, HexParse } from '@oscura/iot-data-parse'
+import { DataUnit, DataType, HexParse, HexUtils } from '@oscura/iot-data-parse'
 const dataSource: DataUnit[] = []
 // data configuration that comes from xls file
 const json = [
