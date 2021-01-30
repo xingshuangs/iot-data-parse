@@ -70,7 +70,27 @@ export default class DataUnit {
   }
 
   /**
+   * 获取总字节长度
+   * 
+   * @returns 字节长度
+   */
+  public getTotalByteLength(): number {
+    switch (this.dataType) {
+      case DataTypeEm.Bool: return Math.ceil((this.bitOffset + this.count) / 8);
+      case DataTypeEm.Ushort: return this.count * 2;
+      case DataTypeEm.Short: return this.count * 2;
+      case DataTypeEm.Uint: return this.count * 4;
+      case DataTypeEm.Int: return this.count * 4;
+      case DataTypeEm.Float: return this.count * 4;
+      case DataTypeEm.Double: return this.count * 8;
+      case DataTypeEm.String: return this.count;
+      default: return this.count;
+    }
+  }
+
+  /**
    * 获取单元数据的信息
+   * @returns 输出信息
    */
   public toString(): string {
     let res = ""
@@ -88,6 +108,7 @@ export default class DataUnit {
    * 提取数据
    * 
    * @param parse 数据解析器
+   * @returns 提取的值
    */
   public extractValue(parse: HexParse): string | number[] | boolean[] {
     switch (this.dataType) {
@@ -100,7 +121,7 @@ export default class DataUnit {
       case DataTypeEm.Double: this.value = parse.toFloat64(this.byteOffset, this.count, this.littleEndian); break;
       case DataTypeEm.String: this.value = parse.toString(this.byteOffset, this.count); break;
     }
-    this.bytes = parse.getUint8Array(this.byteOffset, this.count)
+    this.bytes = parse.getUint8Array(this.byteOffset, this.getTotalByteLength())
     return this.value
   }
 }

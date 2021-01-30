@@ -1,5 +1,7 @@
 
 import { TextEncoder, TextDecoder } from "util"
+import { DataTypeEm } from "./dataTypeEm"
+import DataUnit from "./dataUnit"
 
 /**
  * 16进制数据解析器
@@ -548,4 +550,31 @@ export default class HexParse {
   }
 
   //#endregion
+
+  /**
+   * 根据数据单元解析数据
+   * 
+   * @param src 数据源
+   * @returns 解析的数据结果
+   */
+  public parseData(src: DataUnit): string | number[] | boolean[] {
+    switch (src.dataType) {
+      case DataTypeEm.Bool: src.value = this.toBoolean(src.byteOffset, src.bitOffset, src.count); break;
+      case DataTypeEm.Ushort: src.value = this.toUint16(src.byteOffset, src.count, src.littleEndian); break;
+      case DataTypeEm.Short: src.value = this.toInt16(src.byteOffset, src.count, src.littleEndian); break;
+      case DataTypeEm.Uint: src.value = this.toUint32(src.byteOffset, src.count, src.littleEndian); break;
+      case DataTypeEm.Int: src.value = this.toInt32(src.byteOffset, src.count, src.littleEndian); break;
+      case DataTypeEm.Float: src.value = this.toFloat32(src.byteOffset, src.count, src.littleEndian); break;
+      case DataTypeEm.Double: src.value = this.toFloat64(src.byteOffset, src.count, src.littleEndian); break;
+      case DataTypeEm.String: src.value = this.toString(src.byteOffset, src.count); break;
+    }
+    src.bytes = this.getUint8Array(src.byteOffset, src.getTotalByteLength())
+    return src.value
+  }
+
+  public parseDataArray(src: DataUnit[]) {
+    for (let i = 0, length = src.length; i < length; i++) {
+      this.parseData(src[i])
+    }
+  }
 }

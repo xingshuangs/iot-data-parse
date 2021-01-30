@@ -25,7 +25,8 @@
     "url": "https://github.com/xingshuang0122/iot-data-parse/issues"
   },
   "scripts": {
-    "dev": "ts-node ./src/index.ts",
+    "dev": "tsc",
+    "dev-file": "ts-node ./src/index.ts",
     "rollup": "rollup --config ./config/rollup.config.js",
     "test": "jest",
     "test-c": "jest --coverage"
