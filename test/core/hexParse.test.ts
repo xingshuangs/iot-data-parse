@@ -1,3 +1,4 @@
+import DataUnit from "../../src/core/dataUnit"
 import HexParse from "../../src/core/hexParse"
 // import HexUtils from "../../src/utils/hexUtils"
 
@@ -215,3 +216,24 @@ test(`${right}：addStringArray`, () => {
 })
 
 //#endregion
+
+test(`${right}：parseData`, () => {
+  const dataUnit = new DataUnit().init({ description: "运行状态", unit: "", name: "runStatus", byteOffset: 0, bitOffset: 0, count: 1, dataType: "bool", littleEndian: false })
+  const hexParse = new HexParse().addUint8(0x07).assignRdDataViewByAddResult()
+  const res = hexParse.parseData(dataUnit)
+  expect(res).toEqual([true])
+})
+
+test(`${right}：parseDataArray`, () => {
+  const jsonObj = [
+    { description: "运行状态", unit: "", name: "runStatus", byteOffset: 0, bitOffset: 0, count: 3, dataType: "bool", littleEndian: false },
+    { description: "报警状态", unit: "", name: "alarmStatus", byteOffset: 0, bitOffset: 3, count: 1, dataType: "bool", littleEndian: false },
+    { description: "生产数量", unit: "个", name: "productNumber", byteOffset: 1, bitOffset: 0, count: 2, dataType: "int", littleEndian: false }
+  ]
+  const dataUnitArray = DataUnit.batchInit(jsonObj)
+  const hexParse = new HexParse().addUint8(0x07).addInt32(153).addInt32(129).assignRdDataViewByAddResult()
+  const res = hexParse.parseDataArray(dataUnitArray)
+  expect(res[0].value).toEqual([true, true, true])
+  expect(res[1].value).toEqual([false])
+  expect(res[2].value).toEqual([153, 129])
+})

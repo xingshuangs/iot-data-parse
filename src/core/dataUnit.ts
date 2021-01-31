@@ -1,5 +1,6 @@
-import { DataTypeEm } from "./dataTypeEm"
+import { DataTypeEm, dataTypeEmMap } from "./dataTypeEm"
 import HexParse from "./hexParse"
+import HexParseError from "../exceptions/hexParseError";
 
 /**
  * 数据单元的值和配置信息
@@ -93,15 +94,16 @@ export default class DataUnit {
    * @returns 输出信息
    */
   public toString(): string {
+    // 不是数组
+    if (!Array.isArray(this.value)) return `${this.description}: ${this.value} ${this.unit}`
+
+    // 是数组
     let res = ""
-    if (this.value instanceof Array) {
-      for (let i = 0, length = this.value.length; i < length; i++) {
-        res += `${this.value[i]} ${this.unit}`
-        if (i != length - 1) res += ", "
-      }
-      return `${this.description}: ${res}`
+    for (let i = 0, length = this.value.length; i < length; i++) {
+      res += `${this.value[i]} ${this.unit}`
+      if (i != length - 1) res += ", "
     }
-    else return `${this.description}: ${this.value} ${this.unit}`
+    return `${this.description}: ${res}`
   }
 
   /**
@@ -124,4 +126,57 @@ export default class DataUnit {
     this.bytes = parse.getUint8Array(this.byteOffset, this.getTotalByteLength())
     return this.value
   }
+
+  /**
+   * 初始化数据
+   * 
+   * @param src 数据源
+   * @returns 对象本身this
+   */
+  public init(src: any): DataUnit {
+    if (src.hasOwnProperty("name")) this.name = src.name;
+    if (src.hasOwnProperty("description")) this.description = src.description;
+    if (src.hasOwnProperty("byteOffset")) this.byteOffset = src.byteOffset;
+    if (src.hasOwnProperty("bitOffset")) this.bitOffset = src.bitOffset;
+    if (src.hasOwnProperty("count")) this.count = src.count;
+    if (src.hasOwnProperty("dataType")) this.dataType = dataTypeEmMap[src.dataType];
+    if (src.hasOwnProperty("littleEndian")) this.littleEndian = src.littleEndian;
+    if (src.hasOwnProperty("unit")) this.unit = src.unit;
+    return this
+  }
+
+  //#region 静态方法
+
+  /**
+   * 批量初始化，返回DataUnit数组
+   * 
+   * @param src JSON数据对象
+   * @returns 返回DataUnit数组
+   */
+  public static batchInit(src: any): DataUnit[] {
+    if (!src) throw new HexParseError("输入JSON对象有误")
+    if (!Array.isArray(src)) throw new HexParseError("输入JSON对象必须是数组")
+
+    const result: DataUnit[] = []
+    for (let i = 0, length = src.length; i < length; i++) {
+      result.push(new DataUnit().init(src[i]))
+    }
+    return result
+  }
+
+  /**
+   * 将数组转换为字符串
+   * 
+   * @param src DataUnit数组对象
+   * @returns 字符串结果
+   */
+  public static toArrayString(src: DataUnit[]): string {
+    if (!src) throw new HexParseError("输入JSON对象有误")
+    if (!Array.isArray(src)) throw new HexParseError("输入JSON对象必须是数组")
+    let res = ""
+    src.forEach(x => res += (x.toString() + "\r\n"))
+    return res
+  }
+
+  //#endregion
 }

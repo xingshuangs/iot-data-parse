@@ -1,11 +1,7 @@
-import DataUnit from "../../src/core/dataUnit"
-import HexParse from "../../src/core/hexParse"
-import { dataTypeEmMap } from "../../src/core/dataTypeEm"
-import * as HexUtils from "../../src/utils/hexUtils"
+import { DataUnit, HexParse, HexUtils } from '../../src/index'
 
 const right = "正确情况"
 
-const dataSource: DataUnit[] = []
 const json = [
   { description: "运行状态", unit: "", name: "runStatus", byteOffset: 0, bitOffset: 0, count: 1, dataType: "bool", littleEndian: false },
   { description: "报警状态", unit: "", name: "alarmStatus", byteOffset: 0, bitOffset: 1, count: 1, dataType: "bool", littleEndian: false },
@@ -18,21 +14,16 @@ const json = [
   { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 7, dataType: "string", littleEndian: false },
   { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
 ]
-
-for (const item of json) {
-  const data: DataUnit = new DataUnit()
-  data.description = item.description
-  data.unit = item.unit
-  data.name = item.name
-  data.byteOffset = item.byteOffset
-  data.bitOffset = item.bitOffset
-  data.count = item.count
-  data.littleEndian = item.littleEndian
-  data.dataType = dataTypeEmMap[item.dataType]
-  dataSource.push(data)
-}
+const dataUnitArray = DataUnit.batchInit(json)
 
 test(`${right}：example1`, () => {
+  const ioStr = '07000000994200999A425CF5C340429C28F5C28F5C40434147AE147AE141A1000042033E776A61636B736F6EE4BB8AE5A4A9E5A4A9E6B094E5A5BD'
+  const hexParse = new HexParse(HexUtils.toHexArray(ioStr))
+  const newData = hexParse.parseDataArray(dataUnitArray)
+  console.log(DataUnit.toArrayString(newData))
+})
+
+test(`${right}：example2`, () => {
   const hexParse = new HexParse()
   hexParse.addUint8(0x07)
     // productNumber
@@ -50,21 +41,6 @@ test(`${right}：example1`, () => {
     // alarmContent
     .addString("今天天气好")
     .assignRdDataViewByAddResult()
-    .getAddResult()
-  // const res = HexUtils.toHexString(data)
-  // console.log(res)
-  dataSource.forEach(x => x.extractValue(hexParse))
-  let result = ""
-  dataSource.forEach(x => result += (x.toString() + "\r\n"))
-  console.log(result)
-})
-
-test(`${right}：example2`, () => {
-  const inData = '07000000994200999A425CF5C340429C28F5C28F5C40434147AE147AE141A1000042033E776A61636B736F6EE4BB8AE5A4A9E5A4A9E6B094E5A5BD'
-  const uintData = HexUtils.toHexArray(inData)
-  const hexParse = new HexParse(uintData)
-  dataSource.forEach(x => x.extractValue(hexParse))
-  let result = ""
-  dataSource.forEach(x => result += (x.toString() + "\r\n"))
-  console.log(result)
+  const newData = hexParse.parseDataArray(dataUnitArray)
+  console.log(DataUnit.toArrayString(newData))
 })

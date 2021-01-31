@@ -4,7 +4,7 @@
 
 ## CopyRight
 
-@2019-2020 Oscura, All Rights Reserved
+@2019-2021 Oscura, All Rights Reserved
 
 ## How to get
 
@@ -56,7 +56,7 @@ At last, the data we need is "01 7E 5F C3 3B 42", when we get it, we can parse i
 
 ```
 import { DataUnit, DataType, HexParse, HexUtils } from '@oscura/iot-data-parse'
-const dataSource: DataUnit[] = []
+
 // data configuration that comes from xls file
 const json = [
   { description: "运行状态", unit: "", name: "runStatus", byteOffset: 0, bitOffset: 0, count: 1, dataType: "bool", littleEndian: false },
@@ -70,23 +70,10 @@ const json = [
   { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 7, dataType: "string", littleEndian: false },
   { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
 ]
-
-// create data configuration
-for (const item of json) {
-  const data: DataUnit = new DataUnit()
-  data.description = item.description
-  data.unit = item.unit
-  data.name = item.name
-  data.byteOffset = item.byteOffset
-  data.bitOffset = item.bitOffset
-  data.count = item.count
-  data.littleEndian = item.littleEndian
-  data.dataType = DataType.dataTypeEmMap[item.dataType]
-  dataSource.push(data)
-}
+const dataUnitArray = DataUnit.batchInit(json)
 
 /*********************************** EXAMPLE1 ***********************************/
-// create data source in Uint8Array
+// create hex parse (in Uint8Array)
 const hexParse = new HexParse()
 hexParse.addUint8(0x07)
   // productNumber
@@ -105,20 +92,20 @@ hexParse.addUint8(0x07)
   .addString("今天天气好")
   .assignRdDataViewByAddResult()
 
-// parse data
-dataSource.forEach(x => x.extractValue(hexParse))
-let result = ""
-dataSource.forEach(x => result += (x.toString() + "\r\n"))
-console.log(result)
+  // parse data
+  const newData = hexParse.parseDataArray(dataUnitArray)
+  console.log(DataUnit.toArrayString(newData))
 
 /*********************************** EXAMPLE2 ***********************************/
-const inData = '07000000994200999A425CF5C340429C28F5C28F5C40434147AE147AE141A1000042033E776A61636B736F6EE4BB8AE5A4A9E5A4A9E6B094E5A5BD'
-const uintData = HexUtils.toHexArray(inData)
-const hexParse2 = new HexParse(uintData)
-dataSource.forEach(x => x.extractValue(hexParse2))
-result = ""
-dataSource.forEach(x => result += (x.toString() + "\r\n"))
-console.log(result)
+// io data source
+const ioStr = '07000000994200999A425CF5C340429C28F5C28F5C40434147AE147AE141A1000042033E776A61636B736F6EE4BB8AE5A4A9E5A4A9E6B094E5A5BD'
+
+// create hex parse (in Uint8Array)
+const hexParse2 = new HexParse(HexUtils.toHexArray(ioStr))
+
+// parse data
+const newData2 = hexParse2.parseDataArray(dataUnitArray)
+console.log(DataUnit.toArrayString(newData2))
 ```
 
 result：

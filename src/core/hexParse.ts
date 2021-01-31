@@ -572,9 +572,16 @@ export default class HexParse {
     return src.value
   }
 
-  public parseDataArray(src: DataUnit[]) {
+  /**
+   * 根据数据单元数组解析数据
+   * 
+   * @param src 数据源
+   * @returns DataUnit数组
+   */
+  public parseDataArray(src: DataUnit[]): DataUnit[] {
     for (let i = 0, length = src.length; i < length; i++) {
       this.parseData(src[i])
     }
+    return src
   }
 }
