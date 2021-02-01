@@ -14,7 +14,7 @@ test(`${right}：example1`, () => {
     { description: "温度", unit: "℃", name: "temperature", byteOffset: 13, bitOffset: 0, count: 2, dataType: "double", littleEndian: false },
     { description: "频率", unit: "Hz", name: "frequency", byteOffset: 29, bitOffset: 0, count: 2, dataType: "float", littleEndian: false },
     { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 7, dataType: "string", littleEndian: false },
-    { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
+    { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 15, dataType: "string", littleEndian: false }
   ]
   const dataUnitArray = DataUnit.batchInit(json)
 
@@ -41,7 +41,7 @@ test(`${right}：example2`, () => {
     { description: "温度", unit: "℃", name: "temperature", byteOffset: 13, bitOffset: 0, count: 2, dataType: "double", littleEndian: false },
     { description: "频率", unit: "Hz", name: "frequency", byteOffset: 29, bitOffset: 0, count: 2, dataType: "float", littleEndian: false },
     { description: "用户名", unit: "", name: "username", byteOffset: 37, bitOffset: 0, count: 7, dataType: "string", littleEndian: false },
-    { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 20, dataType: "string", littleEndian: false }
+    { description: "报警内容", unit: "", name: "alarmContent", byteOffset: 44, bitOffset: 0, count: 15, dataType: "string", littleEndian: false }
   ]
   const dataUnitArray = DataUnit.batchInit(json)
 

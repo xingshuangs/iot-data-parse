@@ -3,7 +3,12 @@ import HexParse from "../../src/core/hexParse"
 // import HexUtils from "../../src/utils/hexUtils"
 
 const right = "正确情况"
-// const wrong = "错误情况"
+const wrong = "错误情况"
+
+test(`${wrong}：toInt8`, () => {
+  const hexParse = new HexParse(new Uint8Array([0xFF, 0x81, 0x01, 0x7F]))
+  expect(() => hexParse.toInt8(5, 10)).toThrowError(RangeError)
+})
 
 //#region to方法
 

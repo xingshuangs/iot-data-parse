@@ -53,10 +53,10 @@ export default class HexParse {
    * @throws RangeError异常，超出可访问的索引
    */
   private toHandle<T>(byteOffset: number = 0, count: number = 1, typeByteLength: number = 1, callbackFn: (index: number) => T): T[] {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`总数据字节长度 = ${this.rdDataView.byteLength}`)
-    if (count < 1) throw RangeError("获取的数据个数 < 1")
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`字节偏移量[${byteOffset}] 超过 总数据长度[${this.rdDataView.byteLength}]`)
+    if (count < 1) throw RangeError(`获取的数据个数[${count}] < 1`)
     if (byteOffset + count * typeByteLength > this.rdDataView.byteLength)
-      throw RangeError(`偏移量 + 数据个数 * 类型字节长度 > 总数据字节长度${this.rdDataView.byteLength}`)
+      throw RangeError(`字节偏移量[${byteOffset}] + 数据个数[${count}] * 类型字节长度[${typeByteLength}] > 总数据字节长度[${this.rdDataView.byteLength}]`)
     const res: T[] = []
     for (let i = 0; i < count; i++) {
       res.push(callbackFn(i))
@@ -195,8 +195,11 @@ export default class HexParse {
    * @throws RangeError异常，超出可访问的索引
    */
   public toString(byteOffset: number = 0, count?: number, outputEncoding?: string): string {
-    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`总数据字节长度 = ${this.rdDataView.byteLength}`)
+    if (byteOffset >= this.rdDataView.byteLength) throw RangeError(`字节偏移量[${byteOffset}] 超过 总数据长度[${this.rdDataView.byteLength}]`)
     if (count && count < 1) throw RangeError("获取的数据个数 < 1")
+    if (count && byteOffset + count * 1 > this.rdDataView.byteLength)
+      throw RangeError(`字节偏移量[${byteOffset}] + 数据个数[${count}] * 类型字节长度[1] > 总数据字节长度[${this.rdDataView.byteLength}]`)
+
     const decoder = new TextDecoder(outputEncoding ? outputEncoding : "utf-8")
     const buf = count ? this.rdDataView.buffer.slice(byteOffset, byteOffset + count * 1)
       : this.rdDataView.buffer.slice(byteOffset)
