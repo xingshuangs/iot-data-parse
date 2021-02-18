@@ -78,8 +78,8 @@ export default class HexParse {
     // boolean类型特殊一点，类型字节长度时 1 / 8 = 0.125
     return this.toHandle(byteOffset, count, 1 / 8, i => {
       const bitAdd = (bitOffset + i) % 8
-      const byteAdd = Math.floor((bitOffset + i) / 8)
-      return (this.rdDataView.getUint8(byteOffset + byteAdd) >> bitAdd & 0x01) == 0x01
+      const byteAdd = byteOffset + Math.floor((bitOffset + i) / 8)
+      return (this.rdDataView.getUint8(byteAdd) >> bitAdd & 0x01) == 0x01
     })
   }
 
